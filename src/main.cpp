@@ -4,6 +4,7 @@
 #include <WifiHandler.h>
 #include <MqttHandler.h>
 #include <OTAUpdateHandler.h>
+#include <ESP8266HTTPClient.h>
 
 #ifndef WIFI_SSID
   #error "Missing WIFI_SSID"
