@@ -62,6 +62,8 @@ void loop() {
     String payload = http.getString();
     http.end();
     
+    mqttHandler.publish("/pir/movement", "foo");
+    
     delay(5000);
   } else {
     digitalWrite(LED_BUILTIN, HIGH); // LED off
