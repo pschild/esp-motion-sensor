@@ -55,14 +55,17 @@ void loop() {
   if (state == HIGH) {
     digitalWrite(LED_BUILTIN, LOW); // LED on
     
+    /*
     HTTPClient http;
     http.begin("http://192.168.178.28:9052/movement");
     http.addHeader("Content-Type", "text/plain");
     http.POST("foo");
     String payload = http.getString();
     http.end();
+    */
     
     mqttHandler.publish("/pir/movement", "foo");
+    mqttHandler.publish(String("/") + CHIP_ID + String("/movement"), "bar");
     
     delay(5000);
   } else {
