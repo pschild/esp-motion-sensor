@@ -65,7 +65,9 @@ void loop() {
     */
     
     mqttHandler.publish("/pir/movement", "foo");
-    mqttHandler.publish(String("/") + CHIP_ID + String("/movement"), "bar");
+
+    const String channel = String("/") + CHIP_ID + String("/movement");
+    mqttHandler.publish(channel.c_str(), "bar");
     
     delay(5000);
   } else {
