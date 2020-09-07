@@ -64,12 +64,10 @@ void loop() {
     http.end();
     */
     
-    mqttHandler.publish("/pir/movement", "foo");
-
     const String channel = String("/") + CHIP_ID + String("/movement");
     mqttHandler.publish(channel.c_str(), "bar");
     
-    delay(5000);
+    delay(500);
   } else {
     digitalWrite(LED_BUILTIN, HIGH); // LED off
   }
