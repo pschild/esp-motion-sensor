@@ -103,7 +103,8 @@ void removeLock() {
 }
 
 void ping() {
-  mqttHandler.publish("/devices/nodemcu/version", VERSION);
+  const String channel = String("/devices/") + CHIP_ID + String("/version");
+  mqttHandler.publish(channel.c_str(), VERSION);
 }
 
 void onFooBar(char* payload) {
