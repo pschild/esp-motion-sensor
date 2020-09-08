@@ -21,6 +21,7 @@
 const String CHIP_ID = String("ESP_") + String(ESP.getChipId());
 
 void ping();
+void ledTurnOff();
 void onFooBar(char* payload);
 void onOtaUpdate(char* payload);
 void onMqttConnected();
@@ -28,7 +29,12 @@ void onMqttConnected();
 WifiHandler wifiHandler(WIFI_SSID, WIFI_PASSWORD);
 MqttHandler mqttHandler("192.168.178.28", CHIP_ID);
 OTAUpdateHandler updateHandler("192.168.178.28:9042", VERSION);
+
 Ticker pingTimer(ping, 60 * 1000);
+Ticker switchOffTimer(ledTurnOff, 500);
+Ticker unlockTimer(removeLock, 5000);
+
+boolean locked = false;
 
 void setup() {
   Serial.begin(9600);
@@ -50,11 +56,15 @@ void loop() {
   mqttHandler.loop();
   updateHandler.loop();
   pingTimer.update();
-  
+  switchOffTimer.update();
+  unlockTimer.update();
+
   int state = digitalRead(4); // GPIO 4 => ESP12F
-  if (state == HIGH) {
-    digitalWrite(LED_BUILTIN, LOW); // LED on
-    
+  if (state == HIGH && !locked) {
+    ledTurnOn();
+    switchOffTimer.start();
+    unlockTimer.start();
+
     /*
     HTTPClient http;
     http.begin("http://192.168.178.28:9052/movement");
@@ -63,14 +73,28 @@ void loop() {
     String payload = http.getString();
     http.end();
     */
-    
+
     const String channel = String("/") + CHIP_ID + String("/movement");
     mqttHandler.publish(channel.c_str(), "bar");
-    
-    delay(500);
   } else {
-    digitalWrite(LED_BUILTIN, HIGH); // LED off
+    ledTurnOff();
   }
+}
+
+void ledTurnOn() {
+  digitalWrite(LED_BUILTIN, LOW);
+}
+
+void ledTurnOff() {
+  digitalWrite(LED_BUILTIN, HIGH);
+}
+
+void setLock() {
+  locked = true; 
+}
+
+void removeLock() {
+  locked = false;
 }
 
 void ping() {
@@ -79,9 +103,9 @@ void ping() {
 
 void onFooBar(char* payload) {
   if (strcmp(payload, "on") == 0) {
-    digitalWrite(LED_BUILTIN, LOW);
+    ledTurnOn();
   } else if (strcmp(payload, "off") == 0) {
-    digitalWrite(LED_BUILTIN, HIGH);
+    ledTurnOff();
   }
 }
 
