@@ -21,7 +21,10 @@
 const String CHIP_ID = String("ESP_") + String(ESP.getChipId());
 
 void ping();
+void ledTurnOn();
 void ledTurnOff();
+void setLock();
+void removeLock();
 void onFooBar(char* payload);
 void onOtaUpdate(char* payload);
 void onMqttConnected();
@@ -63,6 +66,8 @@ void loop() {
   if (state == HIGH && !locked) {
     ledTurnOn();
     switchOffTimer.start();
+    
+    setLock();
     unlockTimer.start();
 
     /*
