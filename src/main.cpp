@@ -82,7 +82,7 @@ void loop() {
     */
 
     const String channel = String("devices/") + CHIP_ID + String("/movement");
-    mqttHandler.publish(channel.c_str(), "x");
+    mqttHandler.publish(channel.c_str(), "");
   } else {
     ledTurnOff();
   }
