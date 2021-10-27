@@ -18,7 +18,7 @@
   #error "Missing VERSION"
 #endif
 
-const String CHIP_ID = String("ESP_") + String(ESP.getChipId());
+const String CHIP_ID = String(ESP.getChipId());
 
 void ping();
 void ledTurnOn();
@@ -81,8 +81,8 @@ void loop() {
     http.end();
     */
 
-    const String channel = CHIP_ID + String("/movement");
-    mqttHandler.publish(channel.c_str(), "bar");
+    const String channel = String("devices/") + CHIP_ID + String("/movement");
+    mqttHandler.publish(channel.c_str(), "x");
   } else {
     ledTurnOff();
   }
