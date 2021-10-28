@@ -82,7 +82,7 @@ void loop() {
     */
 
     const String channel = String("devices/") + CHIP_ID + String("/movement");
-    mqttHandler.publish(channel.c_str(), "");
+    mqttHandler.publish(channel.c_str(), NULL);
   } else {
     ledTurnOff();
   }
@@ -127,9 +127,9 @@ void onMqttConnected() {
 }
 
 void onMqttMessage(char* topic, char* message) {
-  /* if (((std::string) topic).rfind("foo/", 0) == 0) {
+  if (((std::string) topic).rfind("foo/", 0) == 0) {
     onFooBar(message);
   } else if (strcmp(topic, "otaUpdate/all") == 0) {
     onOtaUpdate(message);
-  } */
+  }
 }
