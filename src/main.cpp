@@ -19,6 +19,7 @@
 #endif
 
 const String CHIP_ID = String(ESP.getChipId());
+const String CLIENT_NAME = String("ESP_") + CHIP_ID;
 
 void ping();
 void ledTurnOn();
@@ -31,7 +32,7 @@ void onMqttConnected();
 void onMqttMessage(char* topic, char* message);
 
 WifiHandler wifiHandler(WIFI_SSID, WIFI_PASSWORD);
-MqttHandler mqttHandler("192.168.178.28", CHIP_ID);
+MqttHandler mqttHandler("192.168.178.28", CLIENT_NAME);
 OTAUpdateHandler updateHandler("192.168.178.28:9042", VERSION);
 
 Ticker pingTimer(ping, 60 * 1000);
