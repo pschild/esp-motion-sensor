@@ -127,9 +127,9 @@ void onMqttConnected() {
 }
 
 void onMqttMessage(char* topic, char* message) {
-  if (((std::string) topic).rfind("foo/", 0) == 0) {
+  if (String(topic).startsWith("foo/")) {
     onFooBar(message);
-  } else if (strcmp(topic, "otaUpdate/all") == 0) {
+  } else if (String(topic).equals("otaUpdate/all")) {
     onOtaUpdate(message);
   }
 }
