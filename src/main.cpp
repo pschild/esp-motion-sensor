@@ -124,13 +124,17 @@ void onOtaUpdate(char* payload) {
 
 void onMqttConnected() {
   mqttHandler.subscribe("foo/+/baz");
-  mqttHandler.subscribe("otaUpdate/all");
+
+  const String otaDeviceChannel = String("ota/") + CHIP_ID;
+  mqttHandler.subscribe(otaDeviceChannel.c_str());
+  const String otaAllDevicesChannel = "ota/all";
+  mqttHandler.subscribe(otaAllDevicesChannel.c_str());
 }
 
 void onMqttMessage(char* topic, char* message) {
   if (String(topic).startsWith("foo/")) {
     onFooBar(message);
-  } else if (String(topic).equals("otaUpdate/all")) {
+  } else if (String(topic).startsWith("ota/")) {
     onOtaUpdate(message);
   }
 }
