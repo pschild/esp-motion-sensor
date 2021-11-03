@@ -106,7 +106,7 @@ void removeLock() {
 }
 
 void ping() {
-  const String channel = String("devices/") + CHIP_ID + String("/version");
+  const String channel = String("devices/") + CHIP_ID + String("/ping");
   mqttHandler.publish(channel.c_str(), VERSION);
 }
 
